@@ -1,0 +1,165 @@
+{
+  "siteTypes": [
+    {
+      "id": "landing",
+      "label": "Landing Page",
+      "description": "Une page unique optimisée pour la conversion et la capture de leads.",
+      "icon": "fa-rocket",
+      "suggestedPages": ["home"]
+    },
+    {
+      "id": "portfolio",
+      "label": "Portfolio",
+      "description": "Idéal pour les créatifs, photographes et designers souhaitant exposer leurs travaux.",
+      "icon": "fa-camera",
+      "suggestedPages": ["home", "projects", "about", "contact"]
+    },
+    {
+      "id": "business",
+      "label": "Site Vitrine",
+      "description": "Présentation professionnelle complète pour entreprises, agences et consultants.",
+      "icon": "fa-briefcase",
+      "suggestedPages": ["home", "services", "about", "team", "contact"]
+    },
+    {
+      "id": "ecommerce",
+      "label": "E-commerce",
+      "description": "Boutique en ligne complète avec catalogue produits et panier.",
+      "icon": "fa-store",
+      "suggestedPages": ["home", "shop", "product-detail", "cart", "checkout"]
+    },
+    {
+      "id": "blog",
+      "label": "Blog / Média",
+      "description": "Site axé sur le contenu éditorial et les articles d'actualité.",
+      "icon": "fa-newspaper",
+      "suggestedPages": ["home", "articles", "category", "post", "about"]
+    }
+  ],
+  "designStyles": [
+    {
+      "id": "minimalist",
+      "label": "Minimaliste",
+      "description": "Épuré, beaucoup d'espace blanc, typographie simple et lisible. L'accent est mis sur le contenu.",
+      "cssVariables": {
+        "--border-radius": "0px",
+        "--shadow-strength": "0px"
+      }
+    },
+    {
+      "id": "bold",
+      "label": "Audacieux",
+      "description": "Forts contrastes, typographie massive, couleurs vives. Pour les marques qui veulent se démarquer.",
+      "cssVariables": {
+        "--border-radius": "4px",
+        "--shadow-strength": "8px"
+      }
+    },
+    {
+      "id": "corporate",
+      "label": "Corporate",
+      "description": "Professionnel, structuré, rassurant. Utilise des bleus et des gris pour inspirer la confiance.",
+      "cssVariables": {
+        "--border-radius": "6px",
+        "--shadow-strength": "4px"
+      }
+    },
+    {
+      "id": "creative",
+      "label": "Créatif",
+      "description": "Mise en page asymétrique, éléments décoratifs, dégradés. Pour les agences et artistes.",
+      "cssVariables": {
+        "--border-radius": "20px",
+        "--shadow-strength": "12px"
+      }
+    }
+  ],
+  "colorPalettes": [
+    {
+      "id": "ocean",
+      "label": "Océan",
+      "colors": {
+        "primary": "#3b82f6",
+        "secondary": "#0f172a",
+        "accent": "#93c5fd",
+        "background": "#f8fafc"
+      }
+    },
+    {
+      "id": "forest",
+      "label": "Forêt",
+      "colors": {
+        "primary": "#10b981",
+        "secondary": "#064e3b",
+        "accent": "#d1fae5",
+        "background": "#f0fdf4"
+      }
+    },
+    {
+      "id": "sunset",
+      "label": "Sunset",
+      "colors": {
+        "primary": "#f97316",
+        "secondary": "#7c2d12",
+        "accent": "#ffedd5",
+        "background": "#fff7ed"
+      }
+    },
+    {
+      "id": "monochrome",
+      "label": "Monochrome",
+      "colors": {
+        "primary": "#18181b",
+        "secondary": "#71717a",
+        "accent": "#e4e4e7",
+        "background": "#ffffff"
+      }
+    },
+    {
+      "id": "berry",
+      "label": "Berry",
+      "colors": {
+        "primary": "#be123c",
+        "secondary": "#4c0519",
+        "accent": "#fda4af",
+        "background": "#fff1f2"
+      }
+    },
+    {
+      "id": "cyber",
+      "label": "Cyberpunk",
+      "colors": {
+        "primary": "#d946ef",
+        "secondary": "#0f172a",
+        "accent": "#22d3ee",
+        "background": "#020617"
+      }
+    }
+  ],
+  "fontPairings": [
+    {
+      "id": "modern_sans",
+      "label": "Modern Sans",
+      "heading": "Inter",
+      "body": "Inter"
+    },
+    {
+      "id": "elegant_serif",
+      "label": "Elegant Serif",
+      "heading": "Playfair Display",
+      "body": "Lato"
+    },
+    {
+      "id": "tech_mono",
+      "label": "Tech Mono",
+      "heading": "Space Grotesk",
+      "body": "Roboto Mono"
+    },
+    {
+      "id": "humanist",
+      "label": "Humanist",
+      "heading": "Open Sans",
+      "body": "Merriweather"
+    }
+  ]
+}

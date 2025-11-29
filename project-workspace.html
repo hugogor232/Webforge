@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Projet - WebForge AI</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Workspace Specific Layout */
+        body {
+            background-color: #0f172a; /* Darker theme for workspace */
+            color: #e2e8f0;
+            overflow: hidden; /* Prevent body scroll, handle inside containers */
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Header */
+        .workspace-header {
+            height: 60px;
+            background: #1e293b;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .project-title-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: white;
+        }
+
+        .project-status {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #22c55e;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        /* Main Layout */
+        .workspace-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Sidebar (Files/History) */
+        .workspace-sidebar {
+            width: 250px;
+            background: #1e293b;
+            border-right: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar-tabs {
+            display: flex;
+            border-bottom: 1px solid #334155;
+        }
+
+        .sidebar-tab {
+            flex: 1;
+            padding: 0.75rem;
+            text-align: center;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #94a3b8;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .sidebar-tab:hover {
+            color: white;
+            background: #334155;
+        }
+
+        .sidebar-tab.active {
+            color: white;
+            border-bottom-color: var(--primary-color);
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .file-tree-item {
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .file-tree-item:hover {
+            background: #334155;
+            color: white;
+        }
+
+        .file-tree-item i {
+            width: 16px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .history-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid #334155;
+            font-size: 0.85rem;
+        }
+
+        .history-time {
+            color: #64748b;
+            font-size: 0.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Editor Area */
+        .workspace-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #0f172a;
+        }
+
+        .editor-toolbar {
+            height: 40px;
+            background: #1e293b;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            gap: 1rem;
+        }
+
+        .view-toggle {
+            display: flex;
+            background: #0f172a;
+            border-radius: 4px;
+            padding: 2px;
+            border: 1px solid #334155;
+        }
+
+        .toggle-btn {
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            border: none;
+            background: transparent;
+            color: #94a3b8;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .toggle-btn.active {
+            background: #334155;
+            color: white;
+        }
+
+        .split-view {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .code-pane {
+            flex: 1;
+            border-right: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-pane {
+            flex: 1;
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-toolbar {
+            height: 30px;
+            background: #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            padding: 0 0.5rem;
+            gap: 0.5rem;
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+
+        .url-bar {
+            flex: 1;
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 3px;
+            padding: 2px 8px;
+            font-family: monospace;
+        }
+
+        iframe {
+            flex: 1;
+            border: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Fake Code Editor */
+        .code-editor-mock {
+            flex: 1;
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            padding: 1rem;
+            overflow: auto;
+            white-space: pre;
+        }
+
+        .line-num {
+            color: #475569;
+            margin-right: 1rem;
+            user-select: none;
+        }
+
+        .code-keyword { color: #c678dd; }
+        .code-tag { color: #e06c75; }
+        .code-attr { color: #d19a66; }
+        .code-string { color: #98c379; }
+        .code-text { color: #abb2bf; }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .workspace-sidebar {
+                display: none; /* Hide sidebar on mobile for now */
+            }
+            .split-view {
+                flex-direction: column;
+            }
+            .code-pane {
+                display: none; /* Show only preview on mobile by default */
+            }
+            .header-actions span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="workspace-header">
+        <div class="header-left">
+            <a href="dashboard.html" class="btn-icon" title="Retour au Dashboard">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <div class="project-title-wrapper">
+                <span class="project-name" id="project-name">Chargement...</span>
+                <span class="project-status">
+                    <span class="status-dot" id="status-dot"></span>
+                    <span id="status-text">Checking...</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button id="btn-save" class="btn-primary small">
+                <i class="fa-solid fa-save"></i> <span>Sauvegarder</span>
+            </button>
+            <button id="btn-download" class="btn-outline small">
+                <i class="fa-solid fa-download"></i> <span>ZIP</span>
+            </button>
+            <a href="#" id="btn-settings" class="btn-outline small">
+                <i class="fa-solid fa-cog"></i>
+            </a>
+            <a href="#" id="btn-external" target="_blank" class="btn-outline small" title="Ouvrir dans un nouvel onglet">
+                <i class="fa-solid fa-external-link-alt"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="workspace-body">
+        
+        <!-- Sidebar -->
+        <aside class="workspace-sidebar">
+            <div class="sidebar-tabs">
+                <button class="sidebar-tab active" data-tab="files">Fichiers</button>
+                <button class="sidebar-tab" data-tab="history">Historique</button>
+            </div>
+            
+            <div id="tab-files" class="sidebar-content">
+                <div class="file-tree-item"><i class="fa-solid fa-folder-open text-yellow-500"></i> public</div>
+                <div class="file-tree-item" style="padding-left: 1.5rem;"><i class="fa-brands fa-html5 text-orange-500"></i> index.html</div>
+                <div class="file-tree-item" style="padding-left: 1.5rem;"><i class="fa-brands fa-css3-alt text-blue-500"></i> style.css</div>
+                <div class="file-tree-item" style="padding-left: 1.5rem;"><i class="fa-brands fa-js text-yellow-300"></i> script.js</div>
+                <div class="file-tree-item"><i class="fa-solid fa-image text-purple-500"></i> assets</div>
+            </div>
+
+            <div id="tab-history" class="sidebar-content" style="display: none;">
+                <div class="history-item">
+                    <div class="history-time">À l'instant</div>
+                    <div>Modification manuelle</div>
+                </div>
+                <div class="history-item">
+                    <div class="history-time">Il y a 2 min</div>
+                    <div>Génération IA v1.0</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Editor & Preview -->
+        <main class="workspace-main">
+            <div class="editor-toolbar">
+                <div class="view-toggle">
+                    <button class="toggle-btn active" id="view-split">Split</button>
+                    <button class="toggle-btn" id="view-code">Code</button>
+                    <button class="toggle-btn" id="view-preview">Preview</button>
+                </div>
+                <span style="font-size: 0.8rem; color: #64748b;">index.html</span>
+            </div>
+
+            <div class="split-view" id="main-split-view">
+                
+                <!-- Code Editor (Mockup) -->
+                <div class="code-pane" id="pane-code">
+                    <div class="code-editor-mock">
+<span class="line-num">1</span><span class="code-keyword">&lt;!DOCTYPE</span> <span class="code-attr">html</span><span class="code-keyword">&gt;</span>
+<span class="line-num">2</span><span class="code-keyword">&lt;html</span> <span class="code-attr">lang</span>=<span class="code-string">"fr"</span><span class="code-keyword">&gt;</span>
+<span class="line-num">3</span><span class="code-keyword">&lt;head&gt;</span>
+<span class="line-num">4</span>    <span class="code-keyword">&lt;meta</span> <span class="code-attr">charset</span>=<span class="code-string">"UTF-8"</span><span class="code-keyword">&gt;</span>
+<span class="line-num">5</span>    <span class="code-keyword">&lt;title&gt;</span><span class="code-text">Mon Super Site</span><span class="code-keyword">&lt;/title&gt;</span>
+<span class="line-num">6</span>    <span class="code-keyword">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"stylesheet"</span> <span class="code-attr">href</span>=<span class="code-string">"style.css"</span><span class="code-keyword">&gt;</span>
+<span class="line-num">7</span><span class="code-keyword">&lt;/head&gt;</span>
+<span class="line-num">8</span><span class="code-keyword">&lt;body&gt;</span>
+<span class="line-num">9</span>    <span class="code-keyword">&lt;h1&gt;</span><span class="code-text">Bienvenue sur mon site</span><span class="code-keyword">&lt;/h1&gt;</span>
+<span class="line-num">10</span>   <span class="code-keyword">&lt;p&gt;</span><span class="code-text">Généré par WebForge AI.</span><span class="code-keyword">&lt;/p&gt;</span>
+<span class="line-num">11</span><span class="code-keyword">&lt;/body&gt;</span>
+<span class="line-num">12</span><span class="code-keyword">&lt;/html&gt;</span>
+                    </div>
+                </div>
+
+                <!-- Live Preview -->
+                <div class="preview-pane" id="pane-preview">
+                    <div class="preview-toolbar">
+                        <i class="fa-solid fa-lock" style="font-size: 0.7rem;"></i>
+                        <div class="url-bar" id="preview-url-display">https://preview.webforge.ai/...</div>
+                        <button class="btn-icon small" id="refresh-preview"><i class="fa-solid fa-rotate-right"></i></button>
+                    </div>
+                    <iframe id="preview-frame" src="about:blank" title="Preview"></iframe>
+                </div>
+
+            </div>
+        </main>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    
+    <!-- Workspace Logic -->
+    <script type="module">
+        import { supabase } from './supabaseClient.js';
+        import { protectPrivatePage } from './auth-oauth.js';
+
+        let projectId = null;
+        let currentProject = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Protection Auth
+            const user = await protectPrivatePage();
+            if (!user) return;
+
+            // 2. Récupération ID Projet
+            const params = new URLSearchParams(window.location.search);
+            projectId = params.get('id');
+
+            if (!projectId) {
+                alert("Projet non spécifié.");
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            // 3. Chargement Données
+            await loadProjectData();
+
+            // 4. Setup Realtime
+            setupRealtime();
+
+            // 5. UI Event Listeners
+            setupUIHandlers();
+        });
+
+        async function loadProjectData() {
+            try {
+                const { data, error } = await supabase
+                    .from('projects')
+                    .select('*')
+                    .eq('id', projectId)
+                    .single();
+
+                if (error) throw error;
+
+                currentProject = data;
+                updateUI(data);
+
+            } catch (err) {
+                console.error("Erreur chargement projet:", err);
+                alert("Impossible de charger le projet. Il a peut-être été supprimé.");
+                window.location.href = 'dashboard.html';
+            }
+        }
+
+        function updateUI(project) {
+            // Header Info
+            document.getElementById('project-name').textContent = project.name;
+            document.getElementById('btn-settings').href = `settings-project.html?id=${project.id}`;
+            
+            // Status
+            const statusText = document.getElementById('status-text');
+            const statusDot = document.getElementById('status-dot');
+            
+            if (project.status === 'completed') {
+                statusText.textContent = 'En ligne';
+                statusDot.style.backgroundColor = '#22c55e';
+            } else if (project.status === 'pending' || project.status === 'building') {
+                statusText.textContent = 'Construction...';
+                statusDot.style.backgroundColor = '#f59e0b';
+                statusDot.classList.add('pulse'); // CSS animation assumed
+            } else {
+                statusText.textContent = 'Erreur';
+                statusDot.style.backgroundColor = '#ef4444';
+            }
+
+            // Preview
+            const previewUrl = project.url || project.preview_url;
+            const iframe = document.getElementById('preview-frame');
+            const urlDisplay = document.getElementById('preview-url-display');
+            const btnExternal = document.getElementById('btn-external');
+
+            if (previewUrl) {
+                iframe.src = previewUrl;
+                urlDisplay.textContent = previewUrl;
+                btnExternal.href = previewUrl;
+            } else {
+                // Placeholder si pas encore d'URL
+                iframe.srcdoc = `
+                    <body style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;color:#64748b;background:#f8fafc;">
+                        <div style="text-align:center">
+                            <h2>Prévisualisation en attente</h2>
+                            <p>Le site est en cours de génération...</p>
+                        </div>
+                    </body>
+                `;
+            }
+        }
+
+        function setupRealtime() {
+            supabase
+                .channel(`project-${projectId}`)
+                .on('postgres_changes', 
+                    { event: 'UPDATE', schema: 'public', table: 'projects', filter: `id=eq.${projectId}` }, 
+                    (payload) => {
+                        console.log("Mise à jour projet:", payload.new);
+                        updateUI(payload.new);
+                    }
+                )
+                .subscribe();
+        }
+
+        function setupUIHandlers() {
+            // View Toggles
+            const paneCode = document.getElementById('pane-code');
+            const panePreview = document.getElementById('pane-preview');
+            const btns = document.querySelectorAll('.toggle-btn');
+
+            document.getElementById('view-split').addEventListener('click', () => {
+                paneCode.style.display = 'flex';
+                panePreview.style.display = 'flex';
+                setActiveBtn('view-split');
+            });
+
+            document.getElementById('view-code').addEventListener('click', () => {
+                paneCode.style.display = 'flex';
+                panePreview.style.display = 'none';
+                setActiveBtn('view-code');
+            });
+
+            document.getElementById('view-preview').addEventListener('click', () => {
+                paneCode.style.display = 'none';
+                panePreview.style.display = 'flex';
+                setActiveBtn('view-preview');
+            });
+
+            function setActiveBtn(id) {
+                btns.forEach(b => b.classList.remove('active'));
+                document.getElementById(id).classList.add('active');
+            }
+
+            // Sidebar Tabs
+            const tabFiles = document.getElementById('tab-files');
+            const tabHistory = document.getElementById('tab-history');
+            const tabBtns = document.querySelectorAll('.sidebar-tab');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    
+                    if (e.target.dataset.tab === 'files') {
+                        tabFiles.style.display = 'block';
+                        tabHistory.style.display = 'none';
+                    } else {
+                        tabFiles.style.display = 'none';
+                        tabHistory.style.display = 'block';
+                    }
+                });
+            });
+
+            // Refresh Preview
+            document.getElementById('refresh-preview').addEventListener('click', () => {
+                const iframe = document.getElementById('preview-frame');
+                iframe.src = iframe.src;
+            });
+
+            // Download ZIP (Mock)
+            document.getElementById('btn-download').addEventListener('click', () => {
+                alert("Le téléchargement du code source sera disponible une fois la génération terminée.");
+            });
+            
+            // Save (Mock)
+            document.getElementById('btn-save').addEventListener('click', () => {
+                // Ici on enverrait le code modifié à Supabase ou n8n
+                const btn = document.getElementById('btn-save');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Sauvegardé';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

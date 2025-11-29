@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fonctionnalités & Technologie - WebForge AI</title>
+    <meta name="description" content="Découvrez l'architecture technique de WebForge AI : Génération par IA, Backend Supabase, Sécurité RLS et automatisation n8n.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-cube"></i> WebForge AI
+            </a>
+            
+            <div class="burger-menu" id="burger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="nav-links" id="nav-links">
+                <a href="features.html" class="active">Fonctionnalités</a>
+                <a href="pricing.html">Tarifs</a>
+                <div id="nav-auth" class="nav-auth-buttons">
+                    <!-- Injecté via JS selon la session -->
+                    <a href="login.html" class="nav-link">Se connecter</a>
+                    <a href="register.html" class="btn-primary small">S'inscrire</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="hero small-hero">
+        <div class="container text-center">
+            <h1>Puissance de l'IA & <span class="gradient-text">Architecture Moderne</span></h1>
+            <p class="hero-subtitle">
+                WebForge AI combine la créativité des LLM avec la robustesse d'une stack Serverless basée sur Supabase.
+            </p>
+        </div>
+    </header>
+
+    <!-- AI Core Features -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-header">
+                <h2>Le Moteur Génératif</h2>
+                <p>Notre intelligence artificielle ne se contente pas de choisir un template. Elle le construit.</p>
+            </div>
+
+            <div class="grid-3-col">
+                <div class="card glass">
+                    <div class="icon-box primary">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h3>Compréhension Sémantique</h3>
+                    <p>Décrivez votre projet en langage naturel. Notre modèle analyse vos besoins, votre ton et votre audience cible pour définir la structure idéale du site.</p>
+                </div>
+                <div class="card glass">
+                    <div class="icon-box secondary">
+                        <i class="fa-solid fa-pen-nib"></i>
+                    </div>
+                    <h3>Rédaction Automatisée</h3>
+                    <p>Fini le "Lorem Ipsum". L'IA rédige des titres accrocheurs, des paragraphes persuasifs et des appels à l'action optimisés pour la conversion.</p>
+                </div>
+                <div class="card glass">
+                    <div class="icon-box accent">
+                        <i class="fa-solid fa-palette"></i>
+                    </div>
+                    <h3>Design System Dynamique</h3>
+                    <p>Génération à la volée de palettes de couleurs harmonieuses et de combinaisons typographiques adaptées à l'identité visuelle détectée.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Stack Deep Dive -->
+    <section class="section-padding bg-light">
+        <div class="container">
+            <div class="grid-2-col align-center">
+                <div class="tech-content">
+                    <span class="badge-tech">Backend & Data</span>
+                    <h2>Propulsé par Supabase</h2>
+                    <p>Nous avons choisi Supabase pour offrir une expérience utilisateur fluide, sécurisée et temps réel.</p>
+                    
+                    <ul class="tech-list">
+                        <li>
+                            <i class="fa-solid fa-database"></i>
+                            <div>
+                                <strong>PostgreSQL Natif</strong>
+                                <p>Vos données de projets sont stockées dans une base de données relationnelle robuste et performante.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-bolt"></i>
+                            <div>
+                                <strong>Realtime Subscriptions</strong>
+                                <p>Le Dashboard se met à jour instantanément via WebSockets lors de la génération du site.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-fingerprint"></i>
+                            <div>
+                                <strong>Authentification Unifiée</strong>
+                                <p>Gestion sécurisée des sessions via Email/Password et OAuth (Google, GitHub).</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tech-visual">
+                    <div class="code-window">
+                        <div class="window-header">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                            <span class="filename">supabaseClient.js</span>
+                        </div>
+                        <pre><code>
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(URL, KEY)
+
+// Realtime subscription
+const channel = supabase
+  .channel('project_status')
+  .on('postgres_changes', 
+    { event: 'UPDATE', schema: 'public' }, 
+    (payload) => updateUI(payload)
+  )
+  .subscribe()
+                        </code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="grid-2-col align-center reverse-mobile">
+                <div class="security-visual">
+                    <div class="shield-graphic">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <div class="floating-badge badge-rls">RLS Enabled</div>
+                        <div class="floating-badge badge-ssl">SSL/TLS</div>
+                    </div>
+                </div>
+                <div class="security-content">
+                    <span class="badge-tech security">Sécurité</span>
+                    <h2>Vos données sont isolées</h2>
+                    <p>La sécurité n'est pas une option. Nous utilisons les fonctionnalités avancées de PostgreSQL pour garantir la confidentialité.</p>
+                    
+                    <div class="feature-block">
+                        <h3>Row Level Security (RLS)</h3>
+                        <p>Chaque requête vers la base de données est filtrée par le moteur PostgreSQL. Un utilisateur ne peut techniquement voir et modifier QUE les lignes qui lui appartiennent (basé sur son <code>auth.uid()</code>).</p>
+                    </div>
+
+                    <div class="feature-block">
+                        <h3>Architecture Serverless</h3>
+                        <p>Pas de serveurs à gérer, pas de failles d'OS non patchées. L'infrastructure évolue automatiquement avec la charge.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Automation -->
+    <section class="section-padding bg-dark text-white">
+        <div class="container text-center">
+            <h2>Le Flux de Construction</h2>
+            <p class="mb-5">Comment une idée devient un site web en quelques secondes.</p>
+
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="step-circle">1</div>
+                    <h4>Wizard</h4>
+                    <p>Collecte des besoins via formulaire interactif.</p>
+                </div>
+                <div class="connector"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="workflow-step">
+                    <div class="step-circle">2</div>
+                    <h4>JSON</h4>
+                    <p>Structuration des données du projet.</p>
+                </div>
+                <div class="connector"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="workflow-step">
+                    <div class="step-circle">3</div>
+                    <h4>n8n Webhook</h4>
+                    <p>Orchestration des appels API IA & Build.</p>
+                </div>
+                <div class="connector"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="workflow-step">
+                    <div class="step-circle">4</div>
+                    <h4>Déploiement</h4>
+                    <p>Mise en ligne et mise à jour DB.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-box glass">
+                <h2>Testez la puissance de WebForge AI</h2>
+                <p>Créez votre premier site gratuitement et découvrez l'efficacité de notre stack technique.</p>
+                <div class="cta-buttons">
+                    <a href="register.html" class="btn-primary">Créer un compte</a>
+                    <a href="pricing.html" class="btn-outline">Voir les offres</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>WebForge AI</h3>
+                    <p>La plateforme de génération de sites web nouvelle génération.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Produit</h4>
+                    <ul>
+                        <li><a href="features.html">Fonctionnalités</a></li>
+                        <li><a href="pricing.html">Tarifs</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <ul>
+                        <li><a href="#">Mentions légales</a></li>
+                        <li><a href="#">Confidentialité</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Social</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 WebForge AI. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    
+    <!-- Auth Logic -->
+    <script type="module">
+        import { checkSession, logout } from './auth-oauth.js';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const session = await checkSession();
+            const navAuth = document.getElementById('nav-auth');
+
+            if (session) {
+                // Utilisateur connecté
+                navAuth.innerHTML = `
+                    <a href="dashboard.html" class="btn-secondary">
+                        <i class="fa-solid fa-gauge"></i> Dashboard
+                    </a>
+                    <button id="btn-logout-nav" class="btn-logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                `;
+
+                document.getElementById('btn-logout-nav').addEventListener('click', async () => {
+                    await logout();
+                    window.location.reload();
+                });
+            } else {
+                // Utilisateur non connecté (défaut)
+                // Pas de changement nécessaire car le HTML statique contient déjà Login/Register
+            }
+        });
+    </script>
+</body>
+</html>

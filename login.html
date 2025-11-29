@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - WebForge AI</title>
+    <meta name="description" content="Connectez-vous à votre espace membre WebForge AI pour gérer vos projets de sites web.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Styles spécifiques à la page de connexion pour centrer le contenu */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.1), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(236, 72, 153, 0.1), transparent 40%);
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 450px;
+            padding: 2.5rem;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .auth-divider::before {
+            margin-right: 0.5em;
+        }
+
+        .auth-divider::after {
+            margin-left: 0.5em;
+        }
+
+        .social-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-social {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .btn-social:hover {
+            background: var(--bg-card);
+            border-color: var(--text-secondary);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Minimaliste -->
+    <nav class="main-nav" style="position: absolute; top: 0; width: 100%; background: transparent; border: none;">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-cube"></i> WebForge AI
+            </a>
+            <div class="nav-links">
+                <span class="text-secondary text-sm hidden-mobile">Pas encore de compte ?</span>
+                <a href="register.html" class="btn-text">S'inscrire</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="auth-container">
+        
+        <div class="auth-card glass">
+            <div class="auth-header">
+                <h2>Bon retour parmi nous</h2>
+                <p class="text-secondary">Connectez-vous pour accéder à vos projets</p>
+            </div>
+
+            <!-- Zone de notification d'erreur -->
+            <div id="error-message" class="alert-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="error-text">Une erreur est survenue.</span>
+            </div>
+
+            <!-- OAuth Buttons -->
+            <div class="social-buttons">
+                <button type="button" class="btn-social" id="btn-google">
+                    <i class="fa-brands fa-google"></i> Google
+                </button>
+                <button type="button" class="btn-social" id="btn-github">
+                    <i class="fa-brands fa-github"></i> GitHub
+                </button>
+            </div>
+
+            <div class="auth-divider">ou avec votre email</div>
+
+            <!-- Email Form -->
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Adresse Email</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-envelope input-icon"></i>
+                        <input type="email" id="email" name="email" placeholder="nom@exemple.com" required autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="flex justify-between align-center mb-1">
+                        <label for="password" style="margin-bottom: 0;">Mot de passe</label>
+                        <a href="forgot-password.html" class="text-sm text-primary hover-underline">Mot de passe oublié ?</a>
+                    </div>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary full-width" id="btn-submit">
+                    <span class="btn-text">Se connecter</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <i class="fa-solid fa-spinner fa-spin hidden" id="loading-spinner"></i>
+                </button>
+            </form>
+        </div>
+
+        <p class="text-center mt-4 text-sm text-secondary">
+            En vous connectant, vous acceptez nos <a href="#" class="text-primary">CGU</a> et notre <a href="#" class="text-primary">Politique de confidentialité</a>.
+        </p>
+
+    </main>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    
+    <!-- Auth Logic -->
+    <script type="module">
+        import { loginWithEmail, loginWithOAuth, checkSession } from './auth-oauth.js';
+
+        // Éléments du DOM
+        const loginForm = document.getElementById('login-form');
+        const errorAlert = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
+        const btnSubmit = document.getElementById('btn-submit');
+        const btnText = btnSubmit.querySelector('.btn-text');
+        const btnIcon = btnSubmit.querySelector('.fa-arrow-right');
+        const spinner = document.getElementById('loading-spinner');
+
+        // 1. Vérifier si déjà connecté
+        document.addEventListener('DOMContentLoaded', async () => {
+            const session = await checkSession();
+            if (session) {
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        // 2. Gestionnaire du formulaire Email
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Reset UI
+            hideError();
+            setLoading(true);
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const { data, error } = await loginWithEmail(email, password);
+
+                if (error) {
+                    throw error;
+                }
+
+                // Succès : Redirection gérée par checkSession ou ici
+                window.location.href = 'dashboard.html';
+
+            } catch (err) {
+                console.error('Erreur de connexion:', err);
+                showError(translateError(err.message));
+                setLoading(false);
+            }
+        });
+
+        // 3. Gestionnaires OAuth
+        document.getElementById('btn-google').addEventListener('click', () => {
+            loginWithOAuth('google');
+        });
+
+        document.getElementById('btn-github').addEventListener('click', () => {
+            loginWithOAuth('github');
+        });
+
+        // Fonctions utilitaires UI
+        function setLoading(isLoading) {
+            if (isLoading) {
+                btnSubmit.disabled = true;
+                btnText.textContent = 'Connexion...';
+                btnIcon.classList.add('hidden');
+                spinner.classList.remove('hidden');
+            } else {
+                btnSubmit.disabled = false;
+                btnText.textContent = 'Se connecter';
+                btnIcon.classList.remove('hidden');
+                spinner.classList.add('hidden');
+            }
+        }
+
+        function showError(message) {
+            errorText.textContent = message;
+            errorAlert.style.display = 'flex';
+            errorAlert.classList.add('slide-in');
+        }
+
+        function hideError() {
+            errorAlert.style.display = 'none';
+        }
+
+        function translateError(msg) {
+            if (msg.includes('Invalid login credentials')) return 'Email ou mot de passe incorrect.';
+            if (msg.includes('Email not confirmed')) return 'Veuillez confirmer votre email avant de vous connecter.';
+            return msg || 'Une erreur inconnue est survenue.';
+        }
+    </script>
+</body>
+</html>

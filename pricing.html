@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plans et Tarifs - WebForge AI</title>
+    <meta name="description" content="Choisissez le plan adapté à vos besoins. De la création gratuite aux solutions d'entreprise sur mesure.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-cube"></i> WebForge AI
+            </a>
+            
+            <div class="burger-menu" id="burger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="nav-links" id="nav-links">
+                <a href="features.html">Fonctionnalités</a>
+                <a href="pricing.html" class="active">Tarifs</a>
+                <div id="nav-auth" class="nav-auth-buttons">
+                    <!-- Injecté via JS selon la session -->
+                    <a href="login.html" class="nav-link">Se connecter</a>
+                    <a href="register.html" class="btn-primary small">S'inscrire</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="hero small-hero">
+        <div class="container text-center">
+            <h1>Des tarifs simples et <span class="gradient-text">transparents</span></h1>
+            <p class="hero-subtitle">
+                Commencez gratuitement, évoluez selon vos besoins. Pas de carte bancaire requise pour le plan Starter.
+            </p>
+            
+            <!-- Toggle Mensuel/Annuel (Visuel pour l'instant) -->
+            <div class="pricing-toggle">
+                <span class="toggle-label active">Mensuel</span>
+                <label class="switch">
+                    <input type="checkbox" id="billing-toggle">
+                    <span class="slider round"></span>
+                </label>
+                <span class="toggle-label">Annuel <span class="badge-discount">-20%</span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Pricing Cards -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="pricing-grid">
+                
+                <!-- Plan Starter -->
+                <div class="card pricing-card">
+                    <div class="card-header">
+                        <h3>Starter</h3>
+                        <div class="price">0€<span>/mois</span></div>
+                        <p>Pour tester la puissance de l'IA.</p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="feature-list small">
+                            <li><i class="fa-solid fa-check"></i> 1 Projet actif</li>
+                            <li><i class="fa-solid fa-check"></i> Génération IA Standard (GPT-3.5)</li>
+                            <li><i class="fa-solid fa-check"></i> Hébergement sous-domaine</li>
+                            <li><i class="fa-solid fa-check"></i> Support communautaire</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Export code source</li>
+                            <li class="disabled"><i class="fa-solid fa-xmark"></i> Domaine personnalisé</li>
+                        </ul>
+                        <a href="register.html" id="btn-plan-free" class="btn-outline full-width">Commencer gratuitement</a>
+                    </div>
+                </div>
+
+                <!-- Plan Pro -->
+                <div class="card pricing-card featured">
+                    <div class="popular-badge">Le plus populaire</div>
+                    <div class="card-header">
+                        <h3>Pro</h3>
+                        <div class="price">29€<span>/mois</span></div>
+                        <p>Pour les créateurs et freelances.</p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="feature-list small">
+                            <li><i class="fa-solid fa-check"></i> 10 Projets actifs</li>
+                            <li><i class="fa-solid fa-check"></i> <strong>IA Avancée (GPT-4)</strong></li>
+                            <li><i class="fa-solid fa-check"></i> Domaines personnalisés</li>
+                            <li><i class="fa-solid fa-check"></i> Export HTML/CSS</li>
+                            <li><i class="fa-solid fa-check"></i> Suppression du branding</li>
+                            <li><i class="fa-solid fa-check"></i> Support prioritaire par email</li>
+                        </ul>
+                        <a href="register.html" id="btn-plan-pro" class="btn-primary full-width">Choisir le plan Pro</a>
+                    </div>
+                </div>
+
+                <!-- Plan Enterprise -->
+                <div class="card pricing-card">
+                    <div class="card-header">
+                        <h3>Enterprise</h3>
+                        <div class="price">Sur mesure</div>
+                        <p>Pour les agences et grandes équipes.</p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="feature-list small">
+                            <li><i class="fa-solid fa-check"></i> Projets illimités</li>
+                            <li><i class="fa-solid fa-check"></i> Accès API</li>
+                            <li><i class="fa-solid fa-check"></i> Collaboration multi-utilisateurs</li>
+                            <li><i class="fa-solid fa-check"></i> SLA 99.9% garanti</li>
+                            <li><i class="fa-solid fa-check"></i> Account Manager dédié</li>
+                            <li><i class="fa-solid fa-check"></i> Formation des équipes</li>
+                        </ul>
+                        <a href="contact.html" id="btn-plan-ent" class="btn-outline full-width">Nous contacter</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section-padding bg-light">
+        <div class="container small-container">
+            <div class="section-header text-center">
+                <h2>Questions Fréquentes</h2>
+            </div>
+            
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h4>Puis-je changer de plan à tout moment ?</h4>
+                    <p>Oui, vous pouvez passer au plan supérieur ou inférieur directement depuis votre dashboard. Les changements sont effectifs immédiatement.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Le code généré m'appartient-il ?</h4>
+                    <p>Absolument. Avec le plan Pro et Enterprise, vous pouvez exporter le code et l'héberger où vous le souhaitez. Vous possédez la propriété intellectuelle complète.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Quels moyens de paiement acceptez-vous ?</h4>
+                    <p>Nous utilisons Stripe pour sécuriser les paiements. Nous acceptons toutes les cartes de crédit majeures (Visa, Mastercard, Amex).</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Y a-t-il une période d'essai pour le plan Pro ?</h4>
+                    <p>Nous offrons une garantie "satisfait ou remboursé" de 14 jours sur le plan Pro. Contactez simplement le support si vous n'êtes pas convaincu.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>WebForge AI</h3>
+                    <p>La plateforme de génération de sites web nouvelle génération.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Produit</h4>
+                    <ul>
+                        <li><a href="features.html">Fonctionnalités</a></li>
+                        <li><a href="pricing.html">Tarifs</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <ul>
+                        <li><a href="#">Mentions légales</a></li>
+                        <li><a href="#">Confidentialité</a></li>
+                        <li><a href="#">CGU</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Social</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-github"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 WebForge AI. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    
+    <!-- Auth Logic & Dynamic Buttons -->
+    <script type="module">
+        import { checkSession, logout } from './auth-oauth.js';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const session = await checkSession();
+            const navAuth = document.getElementById('nav-auth');
+            
+            // Boutons des plans
+            const btnFree = document.getElementById('btn-plan-free');
+            const btnPro = document.getElementById('btn-plan-pro');
+            const btnEnt = document.getElementById('btn-plan-ent');
+
+            if (session) {
+                // --- UTILISATEUR CONNECTÉ ---
+                
+                // Navigation
+                navAuth.innerHTML = `
+                    <a href="dashboard.html" class="btn-secondary">
+                        <i class="fa-solid fa-gauge"></i> Dashboard
+                    </a>
+                    <button id="btn-logout-nav" class="btn-logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                `;
+
+                // Logout Handler
+                document.getElementById('btn-logout-nav').addEventListener('click', async () => {
+                    await logout();
+                    window.location.reload();
+                });
+
+                // Logique des boutons de prix pour connecté
+                // Plan Free : Redirige vers le dashboard (déjà actif)
+                btnFree.textContent = "Accéder au Dashboard";
+                btnFree.href = "dashboard.html";
+                
+                // Plan Pro : Redirige vers la page de facturation/upgrade
+                btnPro.textContent = "S'abonner";
+                btnPro.href = "billing.html?plan=pro"; // Lien vers page de paiement interne
+                
+                // Plan Enterprise : Contact (reste inchangé ou pré-rempli)
+                btnEnt.href = "contact.html?subject=enterprise";
+
+            } else {
+                // --- VISITEUR ---
+                
+                // Navigation (Défaut HTML)
+                
+                // Logique des boutons de prix pour visiteur
+                // Plan Free : Inscription
+                btnFree.textContent = "S'inscrire gratuitement";
+                btnFree.href = "register.html";
+                
+                // Plan Pro : Inscription avec intention d'achat
+                btnPro.textContent = "Commencer avec Pro";
+                btnPro.href = "register.html?plan=pro";
+                
+                // Plan Enterprise : Contact
+                btnEnt.href = "contact.html";
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebForge AI - Création de sites instantanée</title>
+    <meta name="description" content="Générez des sites web professionnels en quelques secondes grâce à l'intelligence artificielle. Architecture Serverless moderne et sécurisée.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-cube"></i> WebForge AI
+            </a>
+            
+            <div class="burger-menu" id="burger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="nav-links" id="nav-links">
+                <a href="features.html">Fonctionnalités</a>
+                <a href="pricing.html">Tarifs</a>
+                <div id="nav-auth" class="nav-auth-buttons">
+                    <!-- Injecté via JS selon la session -->
+                    <a href="login.html" class="nav-link">Se connecter</a>
+                    <a href="register.html" class="btn-primary small">S'inscrire</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <span class="badge-new">Nouveau : Moteur IA v2.0 disponible</span>
+                <h1>Créez votre site web <span class="gradient-text">instantanément</span> avec l'IA</h1>
+                <p class="hero-subtitle">
+                    Transformez vos idées en réalité numérique. Notre assistant intelligent conçoit, rédige et déploie votre site web complet en moins de 2 minutes.
+                </p>
+                <div class="hero-actions">
+                    <a href="register.html" id="hero-cta" class="btn-primary large">Commencer gratuitement <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="#demo" class="btn-secondary large"><i class="fa-solid fa-play"></i> Voir la démo</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">10k+</span>
+                        <span class="stat-label">Sites générés</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">4.9/5</span>
+                        <span class="stat-label">Note utilisateurs</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">99.9%</span>
+                        <span class="stat-label">Uptime</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="glass-card floating-card">
+                    <div class="code-preview">
+                        <div class="window-controls">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <pre><code>
+{
+  "project": "Portfolio Design",
+  "style": "Minimalist",
+  "sections": ["Hero", "Gallery", "Contact"],
+  "status": "Building..."
+}
+                        </code></pre>
+                    </div>
+                    <div class="ai-badge">
+                        <i class="fa-solid fa-robot"></i> AI Generating...
+                    </div>
+                </div>
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dashboard Interface" class="hero-bg-img">
+            </div>
+        </div>
+    </header>
+
+    <!-- Technologies Section -->
+    <section class="tech-stack">
+        <div class="container">
+            <p>Propulsé par les meilleures technologies modernes</p>
+            <div class="tech-logos">
+                <div class="tech-item" title="Supabase">
+                    <i class="fa-solid fa-database"></i> Supabase
+                </div>
+                <div class="tech-item" title="PostgreSQL">
+                    <i class="fa-solid fa-server"></i> PostgreSQL
+                </div>
+                <div class="tech-item" title="n8n Automation">
+                    <i class="fa-solid fa-bolt"></i> n8n
+                </div>
+                <div class="tech-item" title="OpenAI">
+                    <i class="fa-solid fa-brain"></i> OpenAI
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works / Demo -->
+    <section id="demo" class="section-padding bg-light">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2>Comment ça marche ?</h2>
+                <p>Un processus simple en 5 étapes pour passer de l'idée au site en ligne.</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-icon">1</div>
+                    <h3>Configuration</h3>
+                    <p>Définissez le nom et le type de votre projet via notre wizard intuitif.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">2</div>
+                    <h3>Style & Design</h3>
+                    <p>Choisissez une palette de couleurs et une typographie adaptée à votre marque.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">3</div>
+                    <h3>Contenu IA</h3>
+                    <p>Décrivez votre activité, notre IA rédige les textes optimisés SEO.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">4</div>
+                    <h3>Génération</h3>
+                    <p>Le moteur construit la structure HTML/CSS et injecte les images.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">5</div>
+                    <h3>Déploiement</h3>
+                    <p>Votre site est mis en ligne instantanément avec une URL sécurisée.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="grid-2-col">
+                <div class="feature-content">
+                    <h2>Une architecture robuste et sécurisée</h2>
+                    <p>WebForge AI ne se contente pas de créer de jolies pages. Nous construisons des applications web performantes.</p>
+                    
+                    <ul class="feature-list">
+                        <li>
+                            <i class="fa-solid fa-check-circle"></i>
+                            <div>
+                                <strong>Authentification Sécurisée</strong>
+                                <p>Gestion des utilisateurs via Supabase Auth (Email & OAuth).</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-check-circle"></i>
+                            <div>
+                                <strong>Données en Temps Réel</strong>
+                                <p>Suivez la construction de votre site en direct via WebSockets.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-check-circle"></i>
+                            <div>
+                                <strong>Protection des Données</strong>
+                                <p>Isolation stricte des projets via Row Level Security (RLS).</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="features.html" class="btn-text">Découvrir toutes les fonctionnalités <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Code Security" class="rounded-shadow">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-box glass">
+                <h2>Prêt à lancer votre projet ?</h2>
+                <p>Rejoignez les créateurs qui utilisent WebForge AI pour gagner du temps.</p>
+                <div class="cta-buttons">
+                    <a href="register.html" class="btn-primary">Commencer gratuitement</a>
+                    <a href="pricing.html" class="btn-outline">Voir les tarifs</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>WebForge AI</h3>
+                    <p>La plateforme de génération de sites web nouvelle génération, propulsée par l'intelligence artificielle et le serverless.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Produit</h4>
+                    <ul>
+                        <li><a href="features.html">Fonctionnalités</a></li>
+                        <li><a href="pricing.html">Tarifs</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <ul>
+                        <li><a href="#">Mentions légales</a></li>
+                        <li><a href="#">Confidentialité</a></li>
+                        <li><a href="#">CGU</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Social</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-github"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 WebForge AI. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    
+    <!-- Auth Logic -->
+    <script type="module">
+        import { checkSession, logout } from './auth-oauth.js';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Vérification de la session active
+            const session = await checkSession();
+            
+            const navAuth = document.getElementById('nav-auth');
+            const heroCta = document.getElementById('hero-cta');
+            const ctaButtons = document.querySelectorAll('.cta-buttons .btn-primary');
+
+            if (session) {
+                console.log("Utilisateur connecté :", session.user.email);
+
+                // Mise à jour de la navigation
+                navAuth.innerHTML = `
+                    <a href="dashboard.html" class="btn-secondary">
+                        <i class="fa-solid fa-gauge"></i> Dashboard
+                    </a>
+                    <button id="btn-logout-nav" class="btn-logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                `;
+
+                // Gestionnaire de déconnexion
+                document.getElementById('btn-logout-nav').addEventListener('click', async () => {
+                    await logout();
+                    window.location.reload();
+                });
+
+                // Mise à jour du CTA Hero
+                if (heroCta) {
+                    heroCta.innerHTML = 'Accéder au Dashboard <i class="fa-solid fa-arrow-right"></i>';
+                    heroCta.href = 'dashboard.html';
+                }
+
+                // Mise à jour des autres CTA "Commencer"
+                ctaButtons.forEach(btn => {
+                    btn.textContent = 'Accéder au Dashboard';
+                    btn.href = 'dashboard.html';
+                });
+
+            } else {
+                console.log("Visiteur non connecté");
+                // L'état par défaut HTML est déjà configuré pour les visiteurs (Login/Register)
+            }
+        });
+    </script>
+</body>
+</html>

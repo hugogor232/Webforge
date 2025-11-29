@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facturation & Abonnement - WebForge AI</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Reuse Dashboard Layout */
+        body {
+            background-color: var(--bg-body);
+            overflow-x: hidden;
+        }
+
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar (Identical to dashboard) */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 2rem;
+            max-width: 100%;
+        }
+
+        /* Billing Specific Styles */
+        .billing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .current-plan-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(37, 99, 235, 0.05) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .current-plan-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.1), transparent 70%);
+            pointer-events: none;
+        }
+
+        .plan-status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 1rem;
+        }
+
+        .status-active { background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
+        .status-canceled { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
+
+        .usage-bar-container {
+            margin-top: 1.5rem;
+        }
+
+        .usage-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .usage-track {
+            width: 100%;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .usage-fill {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Plans Grid (Simplified version of pricing.html) */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .plan-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+
+        .plan-card.current {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+        }
+
+        .plan-card:hover:not(.current) {
+            transform: translateY(-5px);
+        }
+
+        .plan-price {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 1rem 0;
+            color: var(--text-primary);
+        }
+
+        .plan-price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+            flex: 1;
+        }
+
+        .plan-features li {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .plan-features li i {
+            color: var(--primary-color);
+        }
+
+        /* Invoices Table */
+        .invoices-section {
+            margin-top: 3rem;
+        }
+
+        .invoices-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .invoices-table th, .invoices-table td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .invoices-table th {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .invoices-table td {
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .billing-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <i class="fa-solid fa-cube"></i> WebForge AI
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="fa-solid fa-gauge"></i> Tableau de bord
+                </a>
+                <a href="create-wizard.html" class="nav-item">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Nouveau projet
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="fa-solid fa-user"></i> Mon Profil
+                </a>
+                <a href="billing.html" class="nav-item active">
+                    <i class="fa-solid fa-credit-card"></i> Abonnement
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="btn-logout" class="btn-outline full-width small">
+                    <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <div class="billing-header">
+                <div>
+                    <h1>Facturation & Plan</h1>
+                    <p class="text-secondary">Gérez votre abonnement et vos moyens de paiement.</p>
+                </div>
+                <button id="btn-stripe-portal" class="btn-outline">
+                    <i class="fa-solid fa-up-right-from-square"></i> Portail Client Stripe
+                </button>
+            </div>
+
+            <!-- Current Plan Status -->
+            <div class="current-plan-card">
+                <div class="flex justify-between align-center mb-2">
+                    <h2 class="h3 mb-0" id="current-plan-name">Plan Gratuit</h2>
+                    <span id="subscription-status" class="plan-status-badge status-active">Actif</span>
+                </div>
+                <p class="text-secondary" id="billing-cycle-info">Renouvellement automatique le 01/01/2024</p>
+                
+                <div class="usage-bar-container">
+                    <div class="usage-header">
+                        <span>Projets utilisés</span>
+                        <span id="usage-text">0 / 1</span>
+                    </div>
+                    <div class="usage-track">
+                        <div class="usage-fill" id="usage-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Available Plans -->
+            <h3 class="mb-4">Changer de plan</h3>
+            <div class="plans-grid">
+                
+                <!-- Free Plan -->
+                <div class="plan-card" id="plan-card-free">
+                    <div class="flex justify-between align-center">
+                        <h4 class="mb-0">Starter</h4>
+                    </div>
+                    <div class="plan-price">0€<span>/mois</span></div>
+                    <ul class="plan-features">
+                        <li><i class="fa-solid fa-check"></i> 1 Projet actif</li>
+                        <li><i class="fa-solid fa-check"></i> Génération IA Standard</li>
+                        <li><i class="fa-solid fa-check"></i> Support communautaire</li>
+                    </ul>
+                    <button class="btn-outline full-width plan-action-btn" data-plan="free">Plan Actuel</button>
+                </div>
+
+                <!-- Pro Plan -->
+                <div class="plan-card" id="plan-card-pro">
+                    <div class="flex justify-between align-center">
+                        <h4 class="mb-0">Pro</h4>
+                        <span class="badge-new">Populaire</span>
+                    </div>
+                    <div class="plan-price">29€<span>/mois</span></div>
+                    <ul class="plan-features">
+                        <li><i class="fa-solid fa-check"></i> 10 Projets actifs</li>
+                        <li><i class="fa-solid fa-check"></i> IA Avancée (GPT-4)</li>
+                        <li><i class="fa-solid fa-check"></i> Export Code & Domaines</li>
+                        <li><i class="fa-solid fa-check"></i> Support Prioritaire</li>
+                    </ul>
+                    <button class="btn-primary full-width plan-action-btn" data-plan="pro">Passer au Pro</button>
+                </div>
+
+                <!-- Enterprise Plan -->
+                <div class="plan-card" id="plan-card-enterprise">
+                    <div class="flex justify-between align-center">
+                        <h4 class="mb-0">Enterprise</h4>
+                    </div>
+                    <div class="plan-price">Sur mesure</div>
+                    <ul class="plan-features">
+                        <li><i class="fa-solid fa-check"></i> Projets illimités</li>
+                        <li><i class="fa-solid fa-check"></i> API Access</li>
+                        <li><i class="fa-solid fa-check"></i> SLA Garanti</li>
+                        <li><i class="fa-solid fa-check"></i> Account Manager</li>
+                    </ul>
+                    <button class="btn-outline full-width" onclick="window.location.href='mailto:sales@webforge.ai'">Contacter</button>
+                </div>
+
+            </div>
+
+            <!-- Invoices History (Mock) -->
+            <div class="invoices-section">
+                <h3>Historique des factures</h3>
+                <div class="card glass" style="padding: 0; overflow: hidden;">
+                    <table class="invoices-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Montant</th>
+                                <th>Plan</th>
+                                <th>Statut</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoices-list">
+                            <!-- Injecté via JS -->
+                            <tr>
+                                <td colspan="5" class="text-center text-secondary py-4">Aucune facture disponible</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    
+    <!-- Billing Logic -->
+    <script type="module">
+        import { supabase } from './supabaseClient.js';
+        import { protectPrivatePage, logout } from './auth-oauth.js';
+
+        let currentUser = null;
+        let currentSubscription = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Protection Auth
+            currentUser = await protectPrivatePage();
+            if (!currentUser) return;
+
+            // 2. Chargement des données
+            await loadSubscriptionData();
+            await loadUsageData();
+
+            // 3. Event Listeners
+            document.getElementById('btn-logout').addEventListener('click', async () => {
+                await logout();
+            });
+
+            document.getElementById('btn-stripe-portal').addEventListener('click', openStripePortal);
+
+            document.querySelectorAll('.plan-action-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => handlePlanChange(e.target.dataset.plan));
+            });
+        });
+
+        async function loadSubscriptionData() {
+            try {
+                // Simulation: Dans un vrai projet, on fetcherait depuis une table 'subscriptions' synchronisée via Webhook Stripe
+                // Pour ce générateur, on vérifie si une table existe, sinon on mock
+                const { data, error } = await supabase
+                    .from('subscriptions')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .single();
+
+                if (error && error.code !== 'PGRST116') {
+                    console.warn("Erreur fetch subscription (peut-être table inexistante):", error.message);
+                }
+
+                currentSubscription = data || { status: 'active', plan_id: 'free' }; // Default to free
+
+                updateUI(currentSubscription);
+
+            } catch (err) {
+                console.error("Erreur chargement abonnement:", err);
+            }
+        }
+
+        async function loadUsageData() {
+            try {
+                // Compter les projets
+                const { count, error } = await supabase
+                    .from('projects')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('user_id', currentUser.id);
+
+                if (error) throw error;
+
+                const usage = count || 0;
+                const limit = currentSubscription?.plan_id === 'pro' ? 10 : 1;
+                const percentage = Math.min((usage / limit) * 100, 100);
+
+                document.getElementById('usage-text').textContent = `${usage} / ${limit}`;
+                document.getElementById('usage-bar').style.width = `${percentage}%`;
+                
+                if (percentage >= 100) {
+                    document.getElementById('usage-bar').style.backgroundColor = '#ef4444';
+                }
+
+            } catch (err) {
+                console.error("Erreur usage:", err);
+            }
+        }
+
+        function updateUI(sub) {
+            const planNameEl = document.getElementById('current-plan-name');
+            const statusEl = document.getElementById('subscription-status');
+            const infoEl = document.getElementById('billing-cycle-info');
+            
+            // Reset cards
+            document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('current'));
+            document.querySelectorAll('.plan-action-btn').forEach(b => {
+                b.textContent = "Choisir ce plan";
+                b.classList.remove('btn-outline');
+                b.classList.add('btn-primary');
+                b.disabled = false;
+            });
+
+            // Logic display
+            if (sub.plan_id === 'pro') {
+                planNameEl.textContent = 'Plan Pro';
+                document.getElementById('plan-card-pro').classList.add('current');
+                
+                const btn = document.querySelector('button[data-plan="pro"]');
+                btn.textContent = "Plan Actuel";
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline');
+                btn.disabled = true;
+
+                infoEl.textContent = sub.current_period_end 
+                    ? `Renouvellement le ${new Date(sub.current_period_end).toLocaleDateString()}`
+                    : 'Abonnement actif';
+
+            } else {
+                planNameEl.textContent = 'Plan Gratuit';
+                document.getElementById('plan-card-free').classList.add('current');
+                
+                const btn = document.querySelector('button[data-plan="free"]');
+                btn.textContent = "Plan Actuel";
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline');
+                btn.disabled = true;
+
+                infoEl.textContent = "Toujours gratuit. Passez au Pro pour plus de puissance.";
+            }
+
+            // Status Badge
+            if (sub.status === 'active') {
+                statusEl.className = 'plan-status-badge status-active';
+                statusEl.textContent = 'Actif';
+            } else if (sub.status === 'canceled') {
+                statusEl.className = 'plan-status-badge status-canceled';
+                statusEl.textContent = 'Annulé';
+            }
+        }
+
+        async function handlePlanChange(planId) {
+            if (planId === currentSubscription.plan_id) return;
+
+            const btn = document.querySelector(`button[data-plan="${planId}"]`);
+            const originalText = btn.textContent;
+            btn.textContent = "Redirection...";
+            btn.disabled = true;
+
+            try {
+                // Simulation d'appel API Backend pour créer une session Stripe Checkout
+                // Dans une vraie app : const { url } = await supabase.functions.invoke('create-checkout', { body: { plan: planId } })
+                
+                console.log(`Initiating upgrade to ${planId}...`);
+                
+                // Mock delay
+                await new Promise(r => setTimeout(r, 1000));
+                
+                alert("Dans une version de production, vous seriez redirigé vers Stripe Checkout.");
+                btn.textContent = originalText;
+                btn.disabled = false;
+
+            } catch (err) {
+                console.error("Erreur checkout:", err);
+                alert("Erreur lors de l'initialisation du paiement.");
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        async function openStripePortal() {
+            const btn = document.getElementById('btn-stripe-portal');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Chargement...';
+            
+            try {
+                // Simulation appel API Backend pour Customer Portal
+                await new Promise(r => setTimeout(r, 800));
+                alert("Redirection vers le portail client Stripe (Gestion des factures, moyens de paiement, annulation).");
+            } finally {
+                btn.innerHTML = '<i class="fa-solid fa-up-right-from-square"></i> Portail Client Stripe';
+            }
+        }
+    </script>
+</body>
+</html>

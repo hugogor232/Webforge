@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord - WebForge AI</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Dashboard Specific Layout */
+        body {
+            background-color: var(--bg-body);
+            overflow-x: hidden;
+        }
+
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-mini-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-details h4 {
+            font-size: 0.9rem;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .user-details span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 2rem;
+            max-width: 100%;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .stat-icon.blue { background: rgba(37, 99, 235, 0.1); color: var(--primary-color); }
+        .stat-icon.green { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+        .stat-icon.purple { background: rgba(168, 85, 247, 0.1); color: #a855f7; }
+
+        .stat-info h3 { font-size: 1.5rem; margin: 0; }
+        .stat-info p { margin: 0; color: var(--text-secondary); font-size: 0.875rem; }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-thumbnail {
+            height: 160px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .card-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(4px);
+        }
+
+        .status-pending { color: #f59e0b; border: 1px solid #f59e0b; }
+        .status-completed { color: #22c55e; border: 1px solid #22c55e; }
+        .status-failed { color: #ef4444; border: 1px solid #ef4444; }
+
+        .card-content {
+            padding: 1.25rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .card-url {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.5s ease;
+            animation: progressIndeterminate 2s infinite linear;
+        }
+
+        @keyframes progressIndeterminate {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .mobile-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <i class="fa-solid fa-cube"></i> WebForge AI
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="fa-solid fa-gauge"></i> Tableau de bord
+                </a>
+                <a href="create-wizard.html" class="nav-item">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Nouveau projet
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="fa-solid fa-user"></i> Mon Profil
+                </a>
+                <a href="billing.html" class="nav-item">
+                    <i class="fa-solid fa-credit-card"></i> Abonnement
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-mini-profile">
+                    <div class="avatar" id="user-avatar">U</div>
+                    <div class="user-details">
+                        <h4 id="user-name">Chargement...</h4>
+                        <span id="user-email">...</span>
+                    </div>
+                </div>
+                <button id="btn-logout" class="btn-outline full-width small">
+                    <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Mobile Header -->
+            <div class="dashboard-header">
+                <div>
+                    <h1>Tableau de Bord</h1>
+                    <p class="text-secondary">Gérez vos sites et suivez leur déploiement.</p>
+                </div>
+                <a href="create-wizard.html" class="btn-primary">
+                    <i class="fa-solid fa-plus"></i> <span class="hidden-mobile">Créer un site</span>
+                </a>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="stat-total">0</h3>
+                        <p>Total Projets</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="stat-online">0</h3>
+                        <p>Sites en ligne</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="stat-credits">Free</h3>
+                        <p>Plan Actuel</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Section -->
+            <div class="section-header mb-4">
+                <h2>Mes Projets Récents</h2>
+            </div>
+
+            <!-- Grid Container -->
+            <div id="projects-container" class="projects-grid">
+                <!-- Loading State -->
+                <div class="card glass" style="grid-column: 1/-1; padding: 2rem; text-align: center;">
+                    <i class="fa-solid fa-spinner fa-spin fa-2x text-primary"></i>
+                    <p class="mt-2">Chargement de vos projets...</p>
+                </div>
+            </div>
+
+            <!-- Empty State Template (Hidden by default) -->
+            <template id="empty-state-template">
+                <div class="card glass text-center" style="grid-column: 1/-1; padding: 4rem 2rem;">
+                    <div style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
+                    <h3>Aucun projet pour le moment</h3>
+                    <p class="text-secondary mb-4">Commencez par créer votre premier site web avec l'IA.</p>
+                    <a href="create-wizard.html" class="btn-primary">Lancer le générateur</a>
+                </div>
+            </template>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    
+    <!-- Dashboard Logic -->
+    <script type="module">
+        import { supabase } from './supabaseClient.js';
+        import { protectPrivatePage, logout } from './auth-oauth.js';
+
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Protection de la page
+            currentUser = await protectPrivatePage();
+            if (!currentUser) return; // Redirection gérée par la fonction
+
+            // 2. Affichage infos utilisateur
+            updateUserProfile(currentUser);
+
+            // 3. Chargement initial des données
+            await loadProjects();
+
+            // 4. Setup Realtime Subscription
+            setupRealtimeSubscription();
+
+            // 5. Logout Handler
+            document.getElementById('btn-logout').addEventListener('click', async () => {
+                await logout();
+            });
+        });
+
+        function updateUserProfile(user) {
+            const nameEl = document.getElementById('user-name');
+            const emailEl = document.getElementById('user-email');
+            const avatarEl = document.getElementById('user-avatar');
+
+            const name = user.user_metadata.full_name || user.email.split('@')[0];
+            
+            nameEl.textContent = name;
+            emailEl.textContent = user.email;
+            avatarEl.textContent = name.charAt(0).toUpperCase();
+        }
+
+        async function loadProjects() {
+            const container = document.getElementById('projects-container');
+            
+            try {
+                const { data: projects, error } = await supabase
+                    .from('projects')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                renderProjects(projects);
+                updateStats(projects);
+
+            } catch (err) {
+                console.error('Erreur chargement projets:', err);
+                container.innerHTML = `
+                    <div class="alert-error" style="grid-column: 1/-1;">
+                        Impossible de charger les projets. Veuillez réessayer.
+                    </div>
+                `;
+            }
+        }
+
+        function renderProjects(projects) {
+            const container = document.getElementById('projects-container');
+            const emptyTemplate = document.getElementById('empty-state-template');
+
+            if (!projects || projects.length === 0) {
+                container.innerHTML = '';
+                container.appendChild(emptyTemplate.content.cloneNode(true));
+                return;
+            }
+
+            container.innerHTML = projects.map(project => createProjectCardHTML(project)).join('');
+        }
+
+        function createProjectCardHTML(project) {
+            const isPending = project.status === 'pending' || project.status === 'building';
+            const isFailed = project.status === 'failed';
+            
+            let statusBadge = '';
+            let statusAction = '';
+            let thumbnailOverlay = '';
+
+            if (isPending) {
+                statusBadge = `<span class="status-badge status-pending"><i class="fa-solid fa-circle-notch fa-spin"></i> En cours</span>`;
+                statusAction = `
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 50%"></div>
+                    </div>
+                    <p class="text-sm text-secondary mt-1">Construction par l'IA...</p>
+                `;
+            } else if (isFailed) {
+                statusBadge = `<span class="status-badge status-failed">Erreur</span>`;
+                statusAction = `<p class="text-sm text-danger">Échec de la génération.</p>`;
+            } else {
+                statusBadge = `<span class="status-badge status-completed">En ligne</span>`;
+                statusAction = `
+                    <a href="project-workspace.html?id=${project.id}" class="btn-outline small">
+                        <i class="fa-solid fa-pen"></i> Éditer
+                    </a>
+                    <a href="${project.url || '#'}" target="_blank" class="btn-primary small">
+                        <i class="fa-solid fa-external-link-alt"></i> Voir
+                    </a>
+                `;
+            }
+
+            // Image par défaut ou capture
+            const imageUrl = project.thumbnail_url || 'https://via.placeholder.com/400x250/f1f5f9/94a3b8?text=WebForge+AI';
+
+            return `
+                <div class="project-card" id="project-${project.id}">
+                    <div class="card-thumbnail">
+                        <img src="${imageUrl}" alt="${project.name}">
+                        ${statusBadge}
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${project.name}</h3>
+                        <a href="#" class="card-url text-sm text-secondary">
+                            <i class="fa-solid fa-link"></i> ${project.subdomain ? project.subdomain + '.webforge.ai' : 'Lien en attente'}
+                        </a>
+                        
+                        <div class="mt-3">
+                            ${statusAction}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateStats(projects) {
+            const total = projects.length;
+            const online = projects.filter(p => p.status === 'completed').length;
+            
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-online').textContent = online;
+            // Le plan serait récupéré depuis la table 'profiles' ou 'subscriptions'
+        }
+
+        function setupRealtimeSubscription() {
+            // Écoute des changements sur la table 'projects' pour l'utilisateur courant
+            // Grâce à RLS, on ne reçoit que nos propres événements
+            supabase
+                .channel('dashboard-projects')
+                .on('postgres_changes', 
+                    { event: '*', schema: 'public', table: 'projects' }, 
+                    (payload) => {
+                        console.log('Changement détecté:', payload);
+                        // Pour simplifier, on recharge tout la liste
+                        // Dans une app complexe, on mettrait à jour le DOM spécifiquement
+                        loadProjects();
+                    }
+                )
+                .subscribe();
+        }
+    </script>
+</body>
+</html>
